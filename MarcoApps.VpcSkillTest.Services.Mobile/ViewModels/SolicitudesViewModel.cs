@@ -14,6 +14,7 @@
 
         public ICommand LoadSolicitudesCommand { get; }
         public ICommand NuevaSolicitudCommand { get; }
+        public ICommand EliminarSolicitudCommand { get; }
 
         public SolicitudesViewModel(HttpService httpService)
         {
@@ -21,6 +22,7 @@
             Solicitudes = new ObservableCollection<SolicitudConsultaDto>();
             LoadSolicitudesCommand = new Command(async () => await LoadSolicitudesAsync());
             NuevaSolicitudCommand = new Command(async () => await NuevaSolicitud());
+            EliminarSolicitudCommand = new Command<int>(async (id) => await EliminarSolicitudAsync(id));
         }
 
         public async Task LoadSolicitudesAsync()
@@ -79,6 +81,44 @@
         {
             // Navegar a la pantalla para crear una nueva solicitud
             await Shell.Current.GoToAsync("//solicitudes/nueva");
+        }
+
+        private async Task EliminarSolicitudAsync(int id)
+        {
+            var confirm = await Application.Current.MainPage.DisplayAlert("Confirmación", "¿Deseas eliminar esta solicitud?", "Sí", "No");
+            if (!confirm) return;
+
+            try
+            {
+                // Eliminar de la Web API
+                var response = await _httpService.DeleteAsync($"solicitud/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    // Eliminar de la base de datos local
+                    var solicitud = await App.Database.GetConnection().Table<Solicitud>().FirstOrDefaultAsync(s => s.SolicitudId == id);
+                    if (solicitud != null)
+                    {
+                        await App.Database.GetConnection().DeleteAsync(solicitud);
+                    }
+
+                    // Eliminar del ObservableCollection
+                    var solicitudDto = Solicitudes.FirstOrDefault(s => s.SolicitudId == id);
+                    if (solicitudDto != null)
+                    {
+                        Solicitudes.Remove(solicitudDto);
+                    }
+
+                    await Application.Current.MainPage.DisplayAlert("Éxito", "Solicitud eliminada correctamente.", "OK");
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", $"Error al eliminar la solicitud: {response.ReasonPhrase}", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error al eliminar la solicitud: {ex.Message}", "OK");
+            }
         }
     }
 }

@@ -5,6 +5,8 @@
     public class Solicitud
     {
         [PrimaryKey, AutoIncrement]
+        public int SolicitudLocalId { get; set; }
+
         public int SolicitudId { get; set; }
 
         [NotNull]

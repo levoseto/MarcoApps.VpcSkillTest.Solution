@@ -26,7 +26,7 @@
                                     <!-- Botón para eliminar -->
                                     <SwipeItem Text="Eliminar"
                                        BackgroundColor="Red"
-                                       Command="{Binding Path=BindingContext.EliminarSolicitudCommand, Source={x:Reference SolicitudesPage}}"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EliminarSolicitudCommand}"
                                        CommandParameter="{Binding SolicitudId}" />
 
                                     <!-- Botón para editar -->
