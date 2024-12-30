@@ -66,6 +66,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\SolicitudesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\SolicitudPiezaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

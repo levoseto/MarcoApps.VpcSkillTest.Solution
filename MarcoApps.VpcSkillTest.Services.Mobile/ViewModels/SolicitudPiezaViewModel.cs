@@ -43,17 +43,32 @@
         {
             try
             {
-                var talleres = await _httpClient.GetFromJsonAsync<List<Taller>>("taller");
-                var refacciones = await _httpClient.GetFromJsonAsync<List<Refaccion>>("refaccion");
+                // Cargar talleres desde la API y sincronizar con SQLite
+                var talleresApi = await _httpClient.GetFromJsonAsync<List<Taller>>("taller");
+                if (talleresApi != null)
+                {
+                    await App.Database.GetConnection().DeleteAllAsync<Taller>();
+                    await App.Database.GetConnection().InsertAllAsync(talleresApi);
+                    Talleres = new ObservableCollection<Taller>(talleresApi);
+                }
 
-                if (talleres != null)
-                    Talleres = new ObservableCollection<Taller>(talleres);
-
-                if (refacciones != null)
-                    Refacciones = new ObservableCollection<Refaccion>(refacciones);
+                // Cargar refacciones desde la API y sincronizar con SQLite
+                var refaccionesApi = await _httpClient.GetFromJsonAsync<List<Refaccion>>("refaccion");
+                if (refaccionesApi != null)
+                {
+                    await App.Database.GetConnection().DeleteAllAsync<Refaccion>();
+                    await App.Database.GetConnection().InsertAllAsync(refaccionesApi);
+                    Refacciones = new ObservableCollection<Refaccion>(refaccionesApi);
+                }
             }
             catch (Exception ex)
             {
+                // Si falla la conexión, carga datos locales
+                Talleres = new ObservableCollection<Taller>(
+                    await App.Database.GetConnection().Table<Taller>().ToListAsync());
+                Refacciones = new ObservableCollection<Refaccion>(
+                    await App.Database.GetConnection().Table<Refaccion>().ToListAsync());
+
                 await Application.Current.MainPage.DisplayAlert("Error", $"Error al cargar datos: {ex.Message}", "OK");
             }
         }

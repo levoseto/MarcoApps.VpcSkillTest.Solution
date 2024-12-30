@@ -6,13 +6,10 @@
     xmlns:local="clr-namespace:MarcoApps.VpcSkillTest.Services.Mobile"
     xmlns:pages="clr-namespace:MarcoApps.VpcSkillTest.Services.Mobile.Views"
     Shell.FlyoutBehavior="Flyout"
-    Title="MarcoApps.VpcSkillTest.Services.Mobile">
+    Title="Solicitudes">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
-    <ShellContent Title="Solicitar Pieza"
-              ContentTemplate="{DataTemplate pages:SolicitudPiezaPage}" />
+        Title="Nueva Solicitud"
+        ContentTemplate="{DataTemplate pages:SolicitudesPage}"
+        Route="solicitudes" />
 </Shell>
