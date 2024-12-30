@@ -59,7 +59,6 @@
 
                         await App.Database.GetConnection().InsertAsync(solicitud);
                     }
-                    //await App.Database.GetConnection().InsertAllAsync(solicitudesApi);
                 }
             }
             catch (Exception ex)
