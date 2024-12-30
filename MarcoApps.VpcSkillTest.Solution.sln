@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarcoApps.VpcSkillTest.Services.Api", "MarcoApps.VpcSkillTest.Services.Api\MarcoApps.VpcSkillTest.Services.Api.csproj", "{5869A65F-3699-4FAB-A2B7-1CE5774335D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarcoApps.VpcSkillTest.Services.Mobile", "MarcoApps.VpcSkillTest.Services.Mobile\MarcoApps.VpcSkillTest.Services.Mobile.csproj", "{F96BEB86-A31E-47DC-953B-0D2582F04D19}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5869A65F-3699-4FAB-A2B7-1CE5774335D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5869A65F-3699-4FAB-A2B7-1CE5774335D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5869A65F-3699-4FAB-A2B7-1CE5774335D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5869A65F-3699-4FAB-A2B7-1CE5774335D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F96BEB86-A31E-47DC-953B-0D2582F04D19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F96BEB86-A31E-47DC-953B-0D2582F04D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F96BEB86-A31E-47DC-953B-0D2582F04D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F96BEB86-A31E-47DC-953B-0D2582F04D19}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
