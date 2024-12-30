@@ -26,6 +26,14 @@
             set => SetProperty(ref _refacciones, value);
         }
 
+        private ObservableCollection<Vehiculo> _Vehiculos;
+
+        public ObservableCollection<Vehiculo> Vehiculos
+        {
+            get => _Vehiculos;
+            set => SetProperty(ref _Vehiculos, value);
+        }
+
         private Taller _selectedTaller;
 
         public Taller SelectedTaller
@@ -49,10 +57,11 @@
             _httpService = httpService;
             Talleres = new();
             Refacciones = new();
+            Vehiculos = new();
             SolicitarPiezaCommand = new Command(async () => await SolicitarPiezaAsync());
         }
 
-        public async Task LoadData()
+        public async Task LoadDataAsync()
         {
             try
             {
@@ -68,6 +77,31 @@
                     await App.Database.GetConnection().Table<Refaccion>().ToListAsync());
 
                 await Application.Current.MainPage.DisplayAlert("Error", $"Error al cargar datos: {ex.Message}", "OK");
+            }
+        }
+
+        public async Task CargarVehiculosAsync()
+        {
+            IsBusy = true;
+            try
+            {
+                if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+                {
+                    var talleresApi = await _httpService.GetAsync<List<Taller>>("taller");
+                    SetCollection(ref _talleres, talleresApi); // Usa SetCollection aquí
+                    await App.Database.GetConnection().DeleteAllAsync<Taller>();
+                    await App.Database.GetConnection().InsertAllAsync(talleresApi);
+                }
+            }
+            catch (Exception ex)
+            {
+                var talleresLocal = await App.Database.GetConnection().Table<Taller>().ToListAsync();
+                SetCollection(ref _talleres, talleresLocal); // También usa SetCollection aquí
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error al cargar talleres: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 

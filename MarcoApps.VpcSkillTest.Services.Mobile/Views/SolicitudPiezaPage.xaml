@@ -20,6 +20,11 @@
                 ItemDisplayBinding="{Binding Nombre}"
                 SelectedItem="{Binding SelectedRefaccion}" />
 
+        <Picker Title="Seleccione un VIN"
+            ItemsSource="{Binding Vehiculos}"
+            ItemDisplayBinding="{Binding VIN}"
+            SelectedItem="{Binding SelectedVehiculo}" />
+
         <Button Text="Solicitar Pieza"
                 Command="{Binding SolicitarPiezaCommand}" />
     </StackLayout>

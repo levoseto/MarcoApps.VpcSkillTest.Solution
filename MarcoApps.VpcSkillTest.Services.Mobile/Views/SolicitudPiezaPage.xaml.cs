@@ -20,6 +20,6 @@ public partial class SolicitudPiezaPage : ContentPage
             BindingContext = viewModel;
         }
 
-        await viewModel.LoadData();
+        await viewModel.LoadDataAsync();
     }
 }

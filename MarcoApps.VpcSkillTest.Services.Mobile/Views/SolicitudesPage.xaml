@@ -6,9 +6,10 @@
     Title="SolicitudesPage">
 
     <StackLayout Padding="20">
-        <Label Text="Listado de Solicitudes"
-               FontSize="24"
-               HorizontalOptions="Center" />
+        <Label
+            Text="Listado de Solicitudes"
+            FontSize="24"
+            HorizontalOptions="Center" />
 
         <ListView
             ItemsSource="{Binding Solicitudes}"
@@ -24,16 +25,18 @@
                             <SwipeView.RightItems>
                                 <SwipeItems Mode="Reveal">
                                     <!-- Botón para eliminar -->
-                                    <SwipeItem Text="Eliminar"
-                                       BackgroundColor="Red"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EliminarSolicitudCommand}"
-                                       CommandParameter="{Binding SolicitudId}" />
+                                    <SwipeItem
+                                        Text="Eliminar"
+                                        BackgroundColor="Red"
+                                        Command="{Binding Path=BindingContext.EliminarSolicitudCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                        CommandParameter="{Binding SolicitudId}" />
 
                                     <!-- Botón para editar -->
-                                    <SwipeItem Text="Editar"
-                                       BackgroundColor="Blue"
-                                       Command="{Binding Path=BindingContext.EditarSolicitudCommand, Source={x:Reference SolicitudesPage}}"
-                                       CommandParameter="{Binding SolicitudId}" />
+                                    <SwipeItem
+                                        Text="Editar"
+                                        BackgroundColor="Blue"
+                                        Command="{Binding Path=BindingContext.EditarSolicitudCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                        CommandParameter="{Binding SolicitudId}" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
 
