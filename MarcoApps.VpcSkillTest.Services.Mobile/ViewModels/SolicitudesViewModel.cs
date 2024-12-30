@@ -1,34 +1,35 @@
 ﻿namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
 {
     using MarcoApps.VpcSkillTest.Services.Mobile.Models;
+    using MarcoApps.VpcSkillTest.Services.Mobile.Models.DTO;
+    using MarcoApps.VpcSkillTest.Services.Mobile.Services;
     using System.Collections.ObjectModel;
-    using System.Net.Http.Json;
     using System.Windows.Input;
 
     public class SolicitudesViewModel : BaseViewModel
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpService _httpService;
 
-        public ObservableCollection<Solicitud> Solicitudes { get; set; }
+        public ObservableCollection<SolicitudConsultaDto> Solicitudes { get; set; }
 
         public ICommand LoadSolicitudesCommand { get; }
         public ICommand NuevaSolicitudCommand { get; }
 
-        public SolicitudesViewModel()
+        public SolicitudesViewModel(HttpService httpService)
         {
-            _httpClient = new HttpClient { BaseAddress = new Uri("https://your-api-url.com/api/") };
-            Solicitudes = new ObservableCollection<Solicitud>();
+            _httpService = httpService;
+            Solicitudes = new ObservableCollection<SolicitudConsultaDto>();
             LoadSolicitudesCommand = new Command(async () => await LoadSolicitudesAsync());
             NuevaSolicitudCommand = new Command(async () => await NuevaSolicitud());
         }
 
-        private async Task LoadSolicitudesAsync()
+        public async Task LoadSolicitudesAsync()
         {
             IsBusy = true;
             try
             {
                 // Cargar las solicitudes desde la API
-                var solicitudesApi = await _httpClient.GetFromJsonAsync<List<Solicitud>>("solicitud");
+                var solicitudesApi = await _httpService.GetAsync<List<SolicitudConsultaDto>>("solicitud/taller/1");
                 if (solicitudesApi != null)
                 {
                     Solicitudes.Clear();
@@ -39,14 +40,33 @@
                 }
 
                 // Sincronizar con la base de datos local
-                await App.Database.GetConnection().DeleteAllAsync<Solicitud>();
-                await App.Database.GetConnection().InsertAllAsync(solicitudesApi);
+                if (solicitudesApi != null && solicitudesApi.Any())
+                {
+                    await App.Database.GetConnection().DeleteAllAsync<Solicitud>();
+                    foreach (var dto in solicitudesApi)
+                    {
+                        var solicitud = new Solicitud
+                        {
+                            SolicitudId = dto.SolicitudId,
+                            TallerSolicitanteId = dto.TallerSolicitanteId,
+                            TallerProveedorId = dto.TallerProveedorId,
+                            RefaccionId = dto.RefaccionId,
+                            MecanicoSolicitanteId = dto.MecanicoSolicitanteId,
+                            VehiculoId = dto.VehiculoId,
+                            Estado = dto.Estado,
+                            FechaSolicitud = dto.FechaSolicitud
+                        };
+
+                        await App.Database.GetConnection().InsertAsync(solicitud);
+                    }
+                    //await App.Database.GetConnection().InsertAllAsync(solicitudesApi);
+                }
             }
             catch (Exception ex)
             {
                 // Cargar desde la base de datos local en caso de error
-                var solicitudesLocal = await App.Database.GetConnection().Table<Solicitud>().ToListAsync();
-                Solicitudes = new ObservableCollection<Solicitud>(solicitudesLocal);
+                var solicitudesLocal = await App.Database.GetConnection().Table<SolicitudConsultaDto>().ToListAsync();
+                Solicitudes = new ObservableCollection<SolicitudConsultaDto>(solicitudesLocal);
 
                 await Application.Current.MainPage.DisplayAlert("Error", $"Error al cargar solicitudes: {ex.Message}", "OK");
             }

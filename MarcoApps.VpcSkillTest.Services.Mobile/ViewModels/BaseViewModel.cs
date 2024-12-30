@@ -1,5 +1,6 @@
 ﻿namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
 {
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
@@ -56,6 +57,23 @@
             backingStore = value;
             OnPropertyChanged(propertyName!);
             return true;
+        }
+
+        protected void SetCollection<T>(ref ObservableCollection<T> backingStore, IEnumerable<T> value, [CallerMemberName] string propertyName = null)
+        {
+            if (backingStore == null)
+            {
+                backingStore = new ObservableCollection<T>(value);
+            }
+            else
+            {
+                backingStore.Clear();
+                foreach (var item in value)
+                {
+                    backingStore.Add(item);
+                }
+            }
+            OnPropertyChanged(propertyName);
         }
     }
 }

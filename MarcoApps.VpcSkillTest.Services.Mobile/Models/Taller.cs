@@ -4,7 +4,7 @@
 
     public class Taller
     {
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey]
         public int TallerId { get; set; }
 
         [NotNull]

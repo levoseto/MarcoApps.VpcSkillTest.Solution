@@ -1,16 +1,30 @@
 ﻿namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
 {
     using MarcoApps.VpcSkillTest.Services.Mobile.Models;
+    using MarcoApps.VpcSkillTest.Services.Mobile.Services;
+    using MarcoApps.VpcSkillTest.Services.Mobile.Tools.Extensions;
     using System.Collections.ObjectModel;
-    using System.Net.Http.Json;
     using System.Windows.Input;
 
     public class SolicitudPiezaViewModel : BaseViewModel
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpService _httpService;
 
-        public ObservableCollection<Taller> Talleres { get; set; }
-        public ObservableCollection<Refaccion> Refacciones { get; set; }
+        private ObservableCollection<Taller> _talleres;
+
+        public ObservableCollection<Taller> Talleres
+        {
+            get => _talleres;
+            set => SetProperty(ref _talleres, value);
+        }
+
+        private ObservableCollection<Refaccion> _refacciones;
+
+        public ObservableCollection<Refaccion> Refacciones
+        {
+            get => _refacciones;
+            set => SetProperty(ref _refacciones, value);
+        }
 
         private Taller _selectedTaller;
 
@@ -30,36 +44,20 @@
 
         public ICommand SolicitarPiezaCommand { get; }
 
-        public SolicitudPiezaViewModel()
+        public SolicitudPiezaViewModel(HttpService httpService)
         {
-            _httpClient = new HttpClient { BaseAddress = new Uri("https://your-api-url.com/api/") };
-            Talleres = new ObservableCollection<Taller>();
-            Refacciones = new ObservableCollection<Refaccion>();
+            _httpService = httpService;
+            Talleres = new();
+            Refacciones = new();
             SolicitarPiezaCommand = new Command(async () => await SolicitarPiezaAsync());
-            LoadData();
         }
 
-        private async void LoadData()
+        public async Task LoadData()
         {
             try
             {
-                // Cargar talleres desde la API y sincronizar con SQLite
-                var talleresApi = await _httpClient.GetFromJsonAsync<List<Taller>>("taller");
-                if (talleresApi != null)
-                {
-                    await App.Database.GetConnection().DeleteAllAsync<Taller>();
-                    await App.Database.GetConnection().InsertAllAsync(talleresApi);
-                    Talleres = new ObservableCollection<Taller>(talleresApi);
-                }
-
-                // Cargar refacciones desde la API y sincronizar con SQLite
-                var refaccionesApi = await _httpClient.GetFromJsonAsync<List<Refaccion>>("refaccion");
-                if (refaccionesApi != null)
-                {
-                    await App.Database.GetConnection().DeleteAllAsync<Refaccion>();
-                    await App.Database.GetConnection().InsertAllAsync(refaccionesApi);
-                    Refacciones = new ObservableCollection<Refaccion>(refaccionesApi);
-                }
+                await CargarCatalogoTalleresAsync();
+                await CargarCatalogoRefaccionesAsync();
             }
             catch (Exception ex)
             {
@@ -70,6 +68,56 @@
                     await App.Database.GetConnection().Table<Refaccion>().ToListAsync());
 
                 await Application.Current.MainPage.DisplayAlert("Error", $"Error al cargar datos: {ex.Message}", "OK");
+            }
+        }
+
+        public async Task CargarCatalogoTalleresAsync()
+        {
+            IsBusy = true;
+            try
+            {
+                if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+                {
+                    var talleresApi = await _httpService.GetAsync<List<Taller>>("taller");
+                    SetCollection(ref _talleres, talleresApi); // Usa SetCollection aquí
+                    await App.Database.GetConnection().DeleteAllAsync<Taller>();
+                    await App.Database.GetConnection().InsertAllAsync(talleresApi);
+                }
+            }
+            catch (Exception ex)
+            {
+                var talleresLocal = await App.Database.GetConnection().Table<Taller>().ToListAsync();
+                SetCollection(ref _talleres, talleresLocal); // También usa SetCollection aquí
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error al cargar talleres: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public async Task CargarCatalogoRefaccionesAsync()
+        {
+            IsBusy = true;
+            try
+            {
+                if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+                {
+                    var refaccionesApi = await _httpService.GetAsync<List<Refaccion>>("refaccion");
+                    SetCollection(ref _refacciones, refaccionesApi); // Usa SetCollection aquí
+                    await App.Database.GetConnection().DeleteAllAsync<Refaccion>();
+                    await App.Database.GetConnection().InsertAllAsync(refaccionesApi);
+                }
+            }
+            catch (Exception ex)
+            {
+                var refaccionesLocal = await App.Database.GetConnection().Table<Refaccion>().ToListAsync();
+                SetCollection(ref _refacciones, refaccionesLocal); // También usa SetCollection aquí
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error al cargar refacciones: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
@@ -96,10 +144,14 @@
                     LongitudSolicitante = -99.133209 // Longitud fija de ejemplo
                 };
 
-                var response = await _httpClient.PostAsJsonAsync("solicitud", solicitud);
+                var solicitudJson = solicitud.ToJson();
+                System.Diagnostics.Debug.WriteLine(solicitudJson);
+
+                var response = await _httpService.PostAsync("solicitud/registrar", solicitud);
                 if (response.IsSuccessStatusCode)
                 {
                     await Application.Current.MainPage.DisplayAlert("Éxito", "Pieza solicitada correctamente.", "OK");
+                    await Shell.Current.GoToAsync("..");
                 }
                 else
                 {

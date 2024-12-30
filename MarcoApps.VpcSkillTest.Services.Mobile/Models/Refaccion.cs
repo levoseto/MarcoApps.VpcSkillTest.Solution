@@ -4,7 +4,7 @@
 
     public class Refaccion
     {
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey]
         public int RefaccionId { get; set; }
 
         [MaxLength(100), NotNull]

@@ -2,32 +2,49 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:vm="clr-namespace:MarcoApps.VpcSkillTest.Services.Mobile.ViewModels"
     x:Class="MarcoApps.VpcSkillTest.Services.Mobile.Views.SolicitudesPage"
     Title="SolicitudesPage">
-    <ContentPage.BindingContext>
-        <vm:SolicitudesViewModel />
-    </ContentPage.BindingContext>
 
     <StackLayout Padding="20">
         <Label Text="Listado de Solicitudes"
                FontSize="24"
                HorizontalOptions="Center" />
 
-        <ListView ItemsSource="{Binding Solicitudes}"
-                  IsRefreshing="{Binding IsBusy}"
-                  RefreshCommand="{Binding LoadSolicitudesCommand}"
-                  HasUnevenRows="True">
+        <ListView
+            ItemsSource="{Binding Solicitudes}"
+            IsRefreshing="{Binding IsBusy}"
+            RefreshCommand="{Binding LoadSolicitudesCommand}"
+            IsPullToRefreshEnabled="True"
+            HasUnevenRows="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Padding="10">
-                            <Label Text="{Binding FechaSolicitud, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
-                                   FontAttributes="Bold" />
-                            <Label Text="{Binding Estado}" />
-                            <Label Text="Refacción: {Binding RefaccionId}" />
-                            <Label Text="Taller Proveedor: {Binding TallerProveedorId}" />
-                        </StackLayout>
+                        <SwipeView>
+                            <!-- Opciones al deslizar -->
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <!-- Botón para eliminar -->
+                                    <SwipeItem Text="Eliminar"
+                                       BackgroundColor="Red"
+                                       Command="{Binding Path=BindingContext.EliminarSolicitudCommand, Source={x:Reference SolicitudesPage}}"
+                                       CommandParameter="{Binding SolicitudId}" />
+
+                                    <!-- Botón para editar -->
+                                    <SwipeItem Text="Editar"
+                                       BackgroundColor="Blue"
+                                       Command="{Binding Path=BindingContext.EditarSolicitudCommand, Source={x:Reference SolicitudesPage}}"
+                                       CommandParameter="{Binding SolicitudId}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <!-- Contenido principal -->
+                            <StackLayout Padding="5">
+                                <Label Text="{Binding Pieza}" FontAttributes="Bold" />
+                                <Label Text="{Binding MecanicoSolicitante}" />
+                                <Label Text="{Binding VIN}" />
+                                <Label Text="{Binding Estado}" />
+                            </StackLayout>
+                        </SwipeView>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
