@@ -59,26 +59,42 @@ namespace MarcoApps.VpcSkillTest.Services.Api.Controllers
         {
             try
             {
+                var diezDiasAtras = DateTime.Now.AddDays(-10);
+
                 var solicitudes = await _context.Solicitudes
-            .Where(s => s.TallerSolicitanteId == tallerId)
-            .Include(s => s.Refaccion)
-            .Include(s => s.MecanicoSolicitante)
-            .Include(s => s.Vehiculo)
-            .Select(s => new SolicitudConsultaDto
-            {
-                SolicitudId = s.SolicitudId,
-                TallerSolicitanteId = s.TallerSolicitanteId,
-                TallerProveedorId = s.TallerProveedorId,
-                RefaccionId = s.RefaccionId,
-                MecanicoSolicitanteId = s.MecanicoSolicitanteId,
-                VehiculoId = s.VehiculoId,
-                Pieza = s.Refaccion.Nombre,
-                MecanicoSolicitante = s.MecanicoSolicitante.Nombre,
-                VIN = s.Vehiculo.VIN,
-                Estado = s.Estado,
-                FechaSolicitud = s.FechaSolicitud
-            })
-            .ToListAsync();
+                    .Where(s => s.TallerSolicitanteId == tallerId && s.FechaSolicitud >= diezDiasAtras)
+                    .OrderBy(s => s.Estado == "Completado")
+                    .ThenByDescending(s => s.FechaSolicitud)
+                    .Include(s => s.Refaccion)
+                    .Include(s => s.MecanicoSolicitante)
+                    .Include(s => s.Vehiculo)
+                    .Select(s => new SolicitudConsultaDto
+                    {
+                        SolicitudId = s.SolicitudId,
+                        TallerSolicitanteId = s.TallerSolicitanteId,
+                        TallerProveedorId = s.TallerProveedorId,
+                        RefaccionId = s.RefaccionId,
+                        MecanicoSolicitanteId = s.MecanicoSolicitanteId,
+                        VehiculoId = s.VehiculoId,
+                        Pieza = s.Refaccion.Nombre,
+                        MecanicoSolicitante = s.MecanicoSolicitante.Nombre,
+                        MecanicoEnvio = s.Estado == "Completado"
+                            ? _context.Envios
+                                .Where(e => e.SolicitudId == s.SolicitudId)
+                                .Select(e => e.MecanicoEnvia.Nombre)
+                                .FirstOrDefault()
+                            : null,
+                        MecanicoEnvioId = s.Estado == "Completado"
+                            ? _context.Envios
+                                .Where(e => e.SolicitudId == s.SolicitudId)
+                                .Select(e => e.MecanicoEnvia.MecanicoId)
+                                .FirstOrDefault()
+                            : null,
+                        VIN = s.Vehiculo.VIN,
+                        Estado = s.Estado,
+                        FechaSolicitud = s.FechaSolicitud
+                    })
+                    .ToListAsync();
 
                 return Ok(solicitudes);
             }
@@ -122,5 +138,42 @@ namespace MarcoApps.VpcSkillTest.Services.Api.Controllers
             }
         }
 
+        [HttpGet("proveedor/{tallerId}")]
+        public async Task<ActionResult<IEnumerable<SolicitudConsultaDto>>> GetSolicitudesPorTallerProveedor(int tallerId)
+        {
+            try
+            {
+                var diezDiasAtras = DateTime.Now.AddDays(-10);
+
+                var solicitudes = await _context.Solicitudes
+                    .Where(s => s.TallerProveedorId == tallerId && s.FechaSolicitud >= diezDiasAtras)
+                    .OrderBy(s => s.Estado == "Completado") // Pendientes primero
+                    .ThenByDescending(s => s.FechaSolicitud) // Ordenar por fecha
+                    .Include(s => s.Refaccion)
+                    .Include(s => s.MecanicoSolicitante)
+                    .Include(s => s.Vehiculo)
+                    .Select(s => new SolicitudConsultaDto
+                    {
+                        SolicitudId = s.SolicitudId,
+                        TallerSolicitanteId = s.TallerSolicitanteId,
+                        TallerProveedorId = s.TallerProveedorId,
+                        RefaccionId = s.RefaccionId,
+                        MecanicoSolicitanteId = s.MecanicoSolicitanteId,
+                        VehiculoId = s.VehiculoId,
+                        Pieza = s.Refaccion.Nombre,
+                        MecanicoSolicitante = s.MecanicoSolicitante.Nombre,
+                        VIN = s.Vehiculo.VIN,
+                        Estado = s.Estado,
+                        FechaSolicitud = s.FechaSolicitud
+                    })
+                    .ToListAsync();
+
+                return Ok(solicitudes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
     }
 }

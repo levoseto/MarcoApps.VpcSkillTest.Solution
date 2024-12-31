@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MarcoApps.VpcSkillTest.Services.Mobile.Views.SolicitudProveedorPage"
+    Title="SolicitudProveedorPage">
+    <StackLayout Padding="20">
+        <Label
+            Text="Solicitudes para Proveedor"
+            FontSize="24"
+            HorizontalOptions="Center" />
+
+        <ListView
+            HasUnevenRows="True"
+            IsRefreshing="{Binding IsBusy}"
+            IsPullToRefreshEnabled="True"
+            ItemsSource="{Binding Solicitudes}"
+            RefreshCommand="{Binding LoadSolicitudesCommand}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <SwipeView>
+                            <!-- Botón para enviar la pieza -->
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem
+                                        Text="Enviar"
+                                        BackgroundColor="Green"
+                                        Command="{Binding Path=BindingContext.EnviarPiezaCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                        CommandParameter="{Binding SolicitudId}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <!-- Contenido principal -->
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding Pieza}" FontAttributes="Bold" />
+                                <Label Text="{Binding MecanicoSolicitante}" />
+                                <Label Text="{Binding VIN}" />
+                                <Label Text="{Binding Estado}" />
+                                <Label Text="{Binding FechaSolicitud, StringFormat='Fecha: {0:dd/MM/yyyy HH:mm}'}" />
+                            </StackLayout>
+                        </SwipeView>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>

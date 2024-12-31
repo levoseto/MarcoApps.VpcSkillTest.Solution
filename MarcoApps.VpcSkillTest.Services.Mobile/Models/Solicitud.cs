@@ -9,22 +9,16 @@
 
         public int SolicitudId { get; set; }
 
-        [NotNull]
         public int TallerSolicitanteId { get; set; }
-
-        [NotNull]
-        public int MecanicoSolicitanteId { get; set; }
-
-        [NotNull]
         public int TallerProveedorId { get; set; }
-
-        [NotNull]
         public int RefaccionId { get; set; }
-
-        [NotNull]
+        public int MecanicoSolicitanteId { get; set; }
         public int VehiculoId { get; set; }
-
-        [NotNull]
+        public string Pieza { get; set; }
+        public string MecanicoSolicitante { get; set; }
+        public string MecanicoEnvio { get; set; }
+        public int? MecanicoEnvioId { get; set; } // Nuevo campo
+        public string VIN { get; set; }
         public DateTime FechaSolicitud { get; set; }
 
         [MaxLength(50), NotNull]

@@ -14,11 +14,21 @@
         public int SolicitudId { get; set; }
 
         [Required]
+        public DateTime FechaEnvio { get; set; }
+
+        [Required]
         [ForeignKey("MecanicoEnvia")]
         public int MecanicoEnviaId { get; set; }
 
         [Required]
-        public DateTime FechaEnvio { get; set; }
+        public int TallerProveedorId { get; set; }
+
+        [Required]
+        public int TallerSolicitanteId { get; set; }
+
+        public int RefaccionId { get; set; }
+
+        public int Cantidad { get; set; }
 
         // Relaciones de Navegación
 
@@ -27,5 +37,14 @@
 
         [JsonIgnore]
         public Mecanico MecanicoEnvia { get; set; }
+
+        [JsonIgnore]
+        public Taller TallerProveedor { get; set; }
+
+        [JsonIgnore]
+        public Taller TallerSolicitante { get; set; }
+
+        [JsonIgnore]
+        public Refaccion Refaccion { get; set; }
     }
 }

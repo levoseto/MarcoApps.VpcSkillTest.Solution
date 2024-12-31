@@ -3,13 +3,16 @@
     x:Class="MarcoApps.VpcSkillTest.Services.Mobile.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:MarcoApps.VpcSkillTest.Services.Mobile"
-    xmlns:pages="clr-namespace:MarcoApps.VpcSkillTest.Services.Mobile.Views"
+    xmlns:local="clr-namespace:MarcoApps.VpcSkillTest.Services.Mobile.Views"
     Shell.FlyoutBehavior="Flyout"
     Title="Solicitudes">
 
     <ShellContent
-        Title="Nueva Solicitud"
-        ContentTemplate="{DataTemplate pages:SolicitudesPage}"
+        Title="Solicitudes realizadas"
+        ContentTemplate="{DataTemplate local:SolicitudesPage}"
         Route="solicitudes" />
+    <ShellContent
+        Title="Solicitudes recibidas"
+        ContentTemplate="{DataTemplate local:SolicitudProveedorPage}"
+        Route="proveedor" />
 </Shell>

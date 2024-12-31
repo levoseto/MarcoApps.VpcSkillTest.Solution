@@ -15,5 +15,13 @@
 
         [NotNull]
         public DateTime FechaEnvio { get; set; }
+
+        public int TallerProveedorId { get; set; }
+
+        public int TallerSolicitanteId { get; set; }
+
+        public int RefaccionId { get; set; }
+
+        public int Cantidad { get; set; }
     }
 }
