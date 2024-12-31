@@ -36,7 +36,7 @@
                                         Text="Editar"
                                         BackgroundColor="Blue"
                                         Command="{Binding Path=BindingContext.EditarSolicitudCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
-                                        CommandParameter="{Binding SolicitudId}" />
+                                        CommandParameter="{Binding .}" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
 

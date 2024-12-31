@@ -87,5 +87,40 @@ namespace MarcoApps.VpcSkillTest.Services.Api.Controllers
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
+
+        [HttpPut("editar/{id}")]
+        public async Task<IActionResult> UpdateSolicitud(int id, [FromBody] SolicitudDto solicitudDto)
+        {
+            if (id != solicitudDto.SolicitudId)
+            {
+                return BadRequest("El ID de la solicitud no coincide.");
+            }
+
+            var solicitud = await _context.Solicitudes.FindAsync(id);
+            if (solicitud == null)
+            {
+                return NotFound("La solicitud no existe.");
+            }
+
+            // Actualizar los campos necesarios
+            solicitud.TallerProveedorId = solicitudDto.TallerProveedorId;
+            solicitud.RefaccionId = solicitudDto.RefaccionId;
+            solicitud.MecanicoSolicitanteId = solicitudDto.MecanicoSolicitanteId;
+            solicitud.VehiculoId = solicitudDto.VehiculoId;
+            solicitud.FechaSolicitud = solicitudDto.FechaSolicitud;
+            solicitud.Estado = solicitudDto.Estado;
+
+            try
+            {
+                _context.Entry(solicitud).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return StatusCode(500, "Error al actualizar la solicitud.");
+            }
+        }
+
     }
 }

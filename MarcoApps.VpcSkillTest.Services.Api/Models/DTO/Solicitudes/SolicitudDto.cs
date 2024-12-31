@@ -2,6 +2,7 @@
 {
     public class SolicitudDto
     {
+        public int SolicitudId { get; set; }
         public int TallerSolicitanteId { get; set; }
         public int MecanicoSolicitanteId { get; set; }
         public int TallerProveedorId { get; set; }

@@ -1,12 +1,17 @@
-﻿namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
-{
-    using MarcoApps.VpcSkillTest.Services.Mobile.Models;
-    using MarcoApps.VpcSkillTest.Services.Mobile.Services;
-    using MarcoApps.VpcSkillTest.Services.Mobile.Tools.Extensions;
-    using System.Collections.ObjectModel;
-    using System.Windows.Input;
+﻿using MarcoApps.VpcSkillTest.Services.Mobile.Models;
+using MarcoApps.VpcSkillTest.Services.Mobile.Models.DTO;
+using MarcoApps.VpcSkillTest.Services.Mobile.Services;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
-    public class SolicitudPiezaViewModel : BaseViewModel
+namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
+{
+    public class EditarSolicitudViewModel : BaseViewModel
     {
         private readonly HttpService _httpService;
 
@@ -35,7 +40,6 @@
         }
 
         private Taller _selectedTaller;
-
         public Taller SelectedTaller
         {
             get => _selectedTaller;
@@ -43,7 +47,6 @@
         }
 
         private Refaccion _selectedRefaccion;
-
         public Refaccion SelectedRefaccion
         {
             get => _selectedRefaccion;
@@ -51,22 +54,73 @@
         }
 
         private Vehiculo _selectedVehiculo;
-
         public Vehiculo SelectedVehiculo
         {
             get => _selectedVehiculo;
             set => SetProperty(ref _selectedVehiculo, value);
         }
 
-        public ICommand SolicitarPiezaCommand { get; }
+        private int _SolicitudId;
+        public int SolicitudId
+        {
+            get => _SolicitudId;
+            set => SetProperty(ref _SolicitudId, value);
+        }
 
-        public SolicitudPiezaViewModel(HttpService httpService)
+        private string _estado;
+        public string Estado
+        {
+            get => _estado;
+            set => SetProperty(ref _estado, value);
+        }
+
+        private double _LatitudSolicita;
+        public double LatitudSolicita
+        {
+            get => _LatitudSolicita;
+            set => SetProperty(ref _LatitudSolicita, value);
+        }
+
+        private double _LonitudSolicita; 
+        
+        public double LLonitudSolicita
+        {
+            get => _LonitudSolicita;
+            set => SetProperty(ref _LonitudSolicita, value);
+        }
+
+        private DateTime _FechaSolicitud;
+
+        public DateTime FechaSolicitud
+        {
+            get => _FechaSolicitud;
+            set => SetProperty(ref _FechaSolicitud, value);
+        }
+
+        public ICommand GuardarCambiosCommand { get; }
+
+        public EditarSolicitudViewModel(HttpService httpService)
         {
             _httpService = httpService;
-            Talleres = new();
-            Refacciones = new();
-            Vehiculos = new();
-            SolicitarPiezaCommand = new Command(async () => await SolicitarPiezaAsync());
+            Talleres = new ObservableCollection<Taller>();
+            Refacciones = new ObservableCollection<Refaccion>();
+            Vehiculos = new ObservableCollection<Vehiculo>();
+
+            GuardarCambiosCommand = new Command(async () => await GuardarCambiosAsync());
+        }
+
+        public async Task Inicializar(SolicitudConsultaDto solicitudConsultaDto)
+        {
+            var solicitud = await App.Database.GetConnection().Table<Solicitud>().FirstOrDefaultAsync(s => s.SolicitudId == solicitudConsultaDto.SolicitudId);
+            if (solicitud is not null)
+            {
+                SolicitudId = solicitudConsultaDto.SolicitudId;
+                SelectedTaller = Talleres.FirstOrDefault(t => t.TallerId == solicitud.TallerProveedorId)!;
+                SelectedRefaccion = Refacciones.FirstOrDefault(r => r.RefaccionId == solicitud.RefaccionId)!;
+                SelectedVehiculo = Vehiculos.FirstOrDefault(v => v.VehiculoId == solicitud.VehiculoId)!;
+                Estado = solicitud.Estado;
+                FechaSolicitud = solicitudConsultaDto.FechaSolicitud;
+            }
         }
 
         public async Task LoadDataAsync()
@@ -164,46 +218,36 @@
             }
         }
 
-        private async Task SolicitarPiezaAsync()
+        private async Task GuardarCambiosAsync()
         {
-            if (SelectedTaller == null || SelectedRefaccion == null || SelectedVehiculo == null)
+            var solicitudDto = new Solicitud
             {
-                await Application.Current.MainPage.DisplayAlert("Advertencia", "Seleccione un taller y una refacción para asignar a un vehículo.", "OK");
-                return;
-            }
+                SolicitudId = SolicitudId, // ID de ejemplo
+                TallerProveedorId = SelectedTaller.TallerId,
+                RefaccionId = SelectedRefaccion.RefaccionId,
+                VehiculoId = SelectedVehiculo.VehiculoId,
+                FechaSolicitud = FechaSolicitud,
+                Estado = Estado,
+                MecanicoSolicitanteId = 1
+            };
 
             try
             {
-                var solicitud = new
-                {
-                    TallerSolicitanteId = 1, // ID fijo del taller solicitante
-                    MecanicoSolicitanteId = 1, // ID del mecánico predeterminado
-                    TallerProveedorId = SelectedTaller.TallerId,
-                    SelectedRefaccion.RefaccionId,
-                    SelectedVehiculo.VehiculoId,
-                    FechaSolicitud = DateTime.Now,
-                    Estado = "Pendiente",
-                    LatitudSolicitante = 19.432608, // Latitud fija de ejemplo
-                    LongitudSolicitante = -99.133209 // Longitud fija de ejemplo
-                };
+                var response = await _httpService.PutAsync<Solicitud>($"solicitud/editar/{solicitudDto.SolicitudId}", solicitudDto);
 
-                var solicitudJson = solicitud.ToJson();
-                System.Diagnostics.Debug.WriteLine(solicitudJson);
-
-                var response = await _httpService.PostAsync("solicitud/registrar", solicitud);
                 if (response.IsSuccessStatusCode)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Éxito", "Pieza solicitada correctamente.", "OK");
-                    await Shell.Current.GoToAsync("..");
+                    await Application.Current.MainPage.DisplayAlert("Éxito", "Solicitud actualizada correctamente.", "OK");
+                    await Shell.Current.GoToAsync(".."); // Regresar a la pantalla anterior
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayAlert("Error", $"Error al solicitar la pieza: {response.ReasonPhrase}", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Error", $"Error al actualizar: {response.ReasonPhrase}", "OK");
                 }
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", $"Error al procesar solicitud: {ex.Message}", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error: {ex.Message}", "OK");
             }
         }
     }

@@ -9,6 +9,11 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile
     {
         public static MauiApp CreateMauiApp()
         {
+            // DevTunnel PC: 3x8xgrg6
+            // DevTunnel Laptop SSA: 5cjpkcs3
+            // DevTunner Laptop Huawei:
+            string prefixUrl = "3x8xgrg6";
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -25,17 +30,19 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile
             // Registrar HttpClient y HttpService
             builder.Services.AddHttpClient<HttpService>(client =>
             {
-                client.BaseAddress = new Uri("https://5cjpkcs3-7172.usw3.devtunnels.ms/api/");
+                client.BaseAddress = new Uri($"https://{prefixUrl}-7172.usw3.devtunnels.ms/api/");
                 client.Timeout = TimeSpan.FromSeconds(30);
             });
 
             // Registrar ViewModels
             builder.Services.AddSingleton<SolicitudesViewModel>();
             builder.Services.AddTransient<SolicitudPiezaViewModel>();
+            builder.Services.AddTransient<EditarSolicitudViewModel>();
 
             // Registrar Views
             builder.Services.AddSingleton<SolicitudesPage>();
             builder.Services.AddTransient<SolicitudPiezaPage>();
+            builder.Services.AddTransient<EditarSolicitudPiezaPage>();
 
             return builder.Build();
         }

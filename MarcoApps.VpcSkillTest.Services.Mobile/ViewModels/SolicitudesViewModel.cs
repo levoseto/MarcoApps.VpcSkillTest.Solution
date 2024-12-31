@@ -4,6 +4,7 @@
     using MarcoApps.VpcSkillTest.Services.Mobile.Models.DTO;
     using MarcoApps.VpcSkillTest.Services.Mobile.Services;
     using System.Collections.ObjectModel;
+    using System.Threading.Tasks;
     using System.Windows.Input;
 
     public class SolicitudesViewModel : BaseViewModel
@@ -15,6 +16,7 @@
         public ICommand LoadSolicitudesCommand { get; }
         public ICommand NuevaSolicitudCommand { get; }
         public ICommand EliminarSolicitudCommand { get; }
+        public ICommand EditarSolicitudCommand { get; }
 
         public SolicitudesViewModel(HttpService httpService)
         {
@@ -23,6 +25,7 @@
             LoadSolicitudesCommand = new Command(async () => await LoadSolicitudesAsync());
             NuevaSolicitudCommand = new Command(async () => await NuevaSolicitud());
             EliminarSolicitudCommand = new Command<int>(async (id) => await EliminarSolicitudAsync(id));
+            EditarSolicitudCommand = new Command<SolicitudConsultaDto>(async (solicitudConsultaDto) => await EditarSolicitudAsync(solicitudConsultaDto));
         }
 
         public async Task LoadSolicitudesAsync()
@@ -118,6 +121,19 @@
             catch (Exception ex)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", $"Error al eliminar la solicitud: {ex.Message}", "OK");
+            }
+        }
+
+        private async Task EditarSolicitudAsync(SolicitudConsultaDto solicitudConsultaDto)
+        {
+            if (solicitudConsultaDto != null)
+            {
+                var solicitudConsultaString = System.Text.Json.JsonSerializer.Serialize(solicitudConsultaDto);
+                await Shell.Current.GoToAsync($"//solicitudes/edita?solicitud={solicitudConsultaString}");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Error al editar la solicitud: null", "OK");
             }
         }
     }

@@ -14,6 +14,8 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile
         {
             // Registrar la ruta para la página que no estará en el menú
             Routing.RegisterRoute("solicitudes/nueva", typeof(SolicitudPiezaPage));
+            Routing.RegisterRoute("solicitudes/edita", typeof(EditarSolicitudPiezaPage));
+
         }
     }
 }

@@ -5,6 +5,8 @@
     public class Vehiculo
     {
         [PrimaryKey, AutoIncrement]
+        public int VehiculoLocalId { get; set; }
+
         public int VehiculoId { get; set; }
 
         [MaxLength(17), NotNull] // VIN estándar

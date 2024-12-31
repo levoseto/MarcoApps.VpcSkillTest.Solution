@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "PC Profile",
+    "Projects": [
+      {
+        "Path": "MarcoApps.VpcSkillTest.Services.Api\\MarcoApps.VpcSkillTest.Services.Api.csproj",
+        "Action": "Start",
+        "DebugTarget": "https"
+      },
+      {
+        "Path": "MarcoApps.VpcSkillTest.Services.Mobile\\MarcoApps.VpcSkillTest.Services.Mobile.csproj",
+        "Action": "Start",
+        "DebugTarget": "HUAWEI EML-L09 (Android 10.0 - API 29)"
+      }
+    ]
+  }
+]
