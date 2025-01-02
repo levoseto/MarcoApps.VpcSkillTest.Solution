@@ -34,7 +34,7 @@
             try
             {
                 // Cargar las solicitudes desde la API
-                var solicitudesApi = await _httpService.GetAsync<List<SolicitudConsultaDto>>("solicitud/taller/1");
+                var solicitudesApi = await _httpService.GetAsync<List<SolicitudConsultaDto>>($"solicitud/taller/{App._authService.CurrentUser.TallerId}");
                 if (solicitudesApi != null)
                 {
                     Solicitudes.Clear();

@@ -2,6 +2,8 @@
 {
     using System.Net.Http;
     using System.Net.Http.Json;
+    using System.Text;
+    using System.Text.Json;
 
     public class HttpService
     {
@@ -29,6 +31,32 @@
             try
             {
                 return await _httpClient.PostAsJsonAsync(endpoint, data);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al enviar datos a {endpoint}: {ex.Message}");
+            }
+        }
+
+        public async Task<T> PostAsync<T, K>(string endpoint, K requestBody)
+        {
+            try
+            {
+                var jsonContent = JsonSerializer.Serialize(requestBody);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync(endpoint, content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception($"Error en la solicitud: {response.StatusCode}, {response.ReasonPhrase}");
+                }
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
             }
             catch (Exception ex)
             {

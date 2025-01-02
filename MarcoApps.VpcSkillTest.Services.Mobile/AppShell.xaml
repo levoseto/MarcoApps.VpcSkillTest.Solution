@@ -8,6 +8,10 @@
     Title="Solicitudes">
 
     <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="main" />
+    <ShellContent
         Title="Solicitudes realizadas"
         ContentTemplate="{DataTemplate local:SolicitudesPage}"
         Icon="solicitudes.png"
@@ -21,4 +25,7 @@
         Title="Instalaciones"
         Icon="instalacion.png"
         ContentTemplate="{DataTemplate local:InstalacionPage}" />
+    <ShellContent
+        Route="login"
+        ContentTemplate="{DataTemplate local:LoginPage}" />
 </Shell>

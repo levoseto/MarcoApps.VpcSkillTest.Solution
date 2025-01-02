@@ -17,6 +17,10 @@ namespace MarcoApps.VpcSkillTest.Services.Api.Models
         [ForeignKey("Taller")]
         public int TallerId { get; set; }
 
+        public string Email { get; set; }
+        public string Telefono { get; set; }
+        public string Password { get; set; } // Ya existente
+
         // Relación de Navegación
         [JsonIgnore]
         public Taller Taller { get; set; }

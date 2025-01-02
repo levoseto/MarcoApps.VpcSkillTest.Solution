@@ -35,7 +35,7 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
 
             try
             {
-                int tallerId = 2; // ID del taller proveedor (puedes configurarlo dinámicamente)
+                int tallerId = App._authService.CurrentUser.TallerId; // ID del taller proveedor (puedes configurarlo dinámicamente)
                 var solicitudes = await _httpService.GetAsync<List<SolicitudConsultaDto>>($"solicitud/proveedor/{tallerId}");
                 if (solicitudes is not null)
                 {
@@ -71,7 +71,7 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
             var envio = new Envio
             {
                 SolicitudId = solicitud.SolicitudId,
-                TallerProveedorId = solicitud.TallerProveedorId,
+                TallerProveedorId = App._authService.CurrentUser.TallerId,
                 TallerSolicitanteId = solicitud.TallerSolicitanteId,
                 RefaccionId = solicitud.RefaccionId,
                 MecanicoEnviaId = 2,

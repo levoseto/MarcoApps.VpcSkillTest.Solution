@@ -176,8 +176,8 @@
             {
                 var solicitud = new
                 {
-                    TallerSolicitanteId = 1, // ID fijo del taller solicitante
-                    MecanicoSolicitanteId = 1, // ID del mecánico predeterminado
+                    TallerSolicitanteId = App._authService.CurrentUser.TallerId, // ID fijo del taller solicitante
+                    MecanicoSolicitanteId = App._authService.CurrentUser.MecanicoId, // ID del mecánico predeterminado
                     TallerProveedorId = SelectedTaller.TallerId,
                     SelectedRefaccion.RefaccionId,
                     SelectedVehiculo.VehiculoId,

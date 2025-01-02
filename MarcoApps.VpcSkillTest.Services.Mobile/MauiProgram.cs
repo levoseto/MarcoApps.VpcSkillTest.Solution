@@ -26,6 +26,9 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+            builder.Services.AddSingleton<App>();
+
+            builder.Services.AddSingleton<AuthService>();
 
             // Registrar HttpClient y HttpService
             builder.Services.AddHttpClient<HttpService>(client =>
@@ -35,6 +38,7 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile
             });
 
             // Registrar ViewModels
+            builder.Services.AddSingleton<LoginViewModel>();
             builder.Services.AddSingleton<SolicitudesViewModel>();
             builder.Services.AddTransient<SolicitudPiezaViewModel>();
             builder.Services.AddTransient<EditarSolicitudViewModel>();
@@ -42,6 +46,7 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile
             builder.Services.AddTransient<InstalacionViewModel>();
 
             // Registrar Views
+            builder.Services.AddSingleton<LoginPage>();
             builder.Services.AddSingleton<SolicitudesPage>();
             builder.Services.AddTransient<SolicitudPiezaPage>();
             builder.Services.AddTransient<EditarSolicitudPiezaPage>();

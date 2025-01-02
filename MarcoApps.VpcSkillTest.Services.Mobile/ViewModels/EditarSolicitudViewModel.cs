@@ -1,12 +1,7 @@
 ﻿using MarcoApps.VpcSkillTest.Services.Mobile.Models;
 using MarcoApps.VpcSkillTest.Services.Mobile.Models.DTO;
 using MarcoApps.VpcSkillTest.Services.Mobile.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
@@ -40,6 +35,7 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
         }
 
         private Taller _selectedTaller;
+
         public Taller SelectedTaller
         {
             get => _selectedTaller;
@@ -47,6 +43,7 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
         }
 
         private Refaccion _selectedRefaccion;
+
         public Refaccion SelectedRefaccion
         {
             get => _selectedRefaccion;
@@ -54,6 +51,7 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
         }
 
         private Vehiculo _selectedVehiculo;
+
         public Vehiculo SelectedVehiculo
         {
             get => _selectedVehiculo;
@@ -61,6 +59,7 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
         }
 
         private int _SolicitudId;
+
         public int SolicitudId
         {
             get => _SolicitudId;
@@ -68,6 +67,7 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
         }
 
         private string _estado;
+
         public string Estado
         {
             get => _estado;
@@ -75,14 +75,15 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
         }
 
         private double _LatitudSolicita;
+
         public double LatitudSolicita
         {
             get => _LatitudSolicita;
             set => SetProperty(ref _LatitudSolicita, value);
         }
 
-        private double _LonitudSolicita; 
-        
+        private double _LonitudSolicita;
+
         public double LLonitudSolicita
         {
             get => _LonitudSolicita;
@@ -224,11 +225,12 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
             {
                 SolicitudId = SolicitudId, // ID de ejemplo
                 TallerProveedorId = SelectedTaller.TallerId,
+                TallerSolicitanteId = App._authService.CurrentUser.TallerId,
                 RefaccionId = SelectedRefaccion.RefaccionId,
                 VehiculoId = SelectedVehiculo.VehiculoId,
                 FechaSolicitud = FechaSolicitud,
                 Estado = Estado,
-                MecanicoSolicitanteId = 1
+                MecanicoSolicitanteId = App._authService.CurrentUser.MecanicoId,
             };
 
             try
