@@ -10,12 +10,23 @@
         public int InstalacionId { get; set; }
 
         [Required]
+        public int VehiculoId { get; set; }
+
+        [Required]
         [ForeignKey("Solicitud")]
         public int SolicitudId { get; set; }
 
         [Required]
-        [ForeignKey("MecanicoInstala")]
-        public int MecanicoInstalaId { get; set; }
+        [ForeignKey("Solicitud")]
+        public int RefaccionId { get; set; }
+
+        [Required]
+        [ForeignKey("Solicitud")]
+        public int TallerId { get; set; }
+
+        [Required]
+        [ForeignKey("Mecanico")]
+        public int MecanicoId { get; set; }
 
         [Required]
         public DateTime FechaInstalacion { get; set; }
@@ -26,11 +37,17 @@
         [Required]
         public double LongitudInstalacion { get; set; }
 
-        // Relaciones de Navegación
+        // Propiedades de navegación (opcional)
         [JsonIgnore]
-        public Solicitud Solicitud { get; set; }
+        public Vehiculo Vehiculo { get; set; }
 
         [JsonIgnore]
-        public Mecanico MecanicoInstala { get; set; }
+        public Refaccion Refaccion { get; set; }
+
+        [JsonIgnore]
+        public Taller Taller { get; set; }
+
+        [JsonIgnore]
+        public Mecanico Mecanico { get; set; }
     }
 }

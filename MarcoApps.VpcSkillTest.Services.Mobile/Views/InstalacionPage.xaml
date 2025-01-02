@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MarcoApps.VpcSkillTest.Services.Mobile.Views.InstalacionPage"
+    Title="InstalacionPage">
+    <StackLayout Padding="20">
+        <Label Text="Registrar Instalación"
+               FontSize="24"
+               HorizontalOptions="Center" />
+
+        <!-- Picker para seleccionar vehículo -->
+        <Picker Title="Seleccione un Vehículo"
+                ItemsSource="{Binding Vehiculos}"
+                ItemDisplayBinding="{Binding VIN}"
+                SelectedItem="{Binding SelectedVehiculo}" />
+
+        <!-- Picker para seleccionar refacción -->
+        <Picker Title="Seleccione una Refacción"
+                ItemsSource="{Binding Refacciones}"
+                ItemDisplayBinding="{Binding Nombre}"
+                SelectedItem="{Binding SelectedRefaccion}" />
+
+        <!-- Botón para registrar la instalación -->
+        <Button Text="Registrar Instalación"
+                Command="{Binding RegistrarInstalacionCommand}"
+                IsEnabled="{Binding CanRegistrar}"
+                HorizontalOptions="Center" />
+
+        <!-- Mensaje de estado -->
+        <Label Text="{Binding EstadoMensaje}"
+               TextColor="Red"
+               HorizontalOptions="Center"
+               FontSize="14"
+               IsVisible="{Binding MostrarEstado}" />
+    </StackLayout>
+</ContentPage>

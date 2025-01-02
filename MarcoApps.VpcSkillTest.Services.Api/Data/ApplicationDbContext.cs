@@ -72,18 +72,6 @@ namespace MarcoApps.VpcSkillTest.Services.Api.Data
                 .WithMany()
                 .HasForeignKey(e => e.MecanicoEnviaId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Instalacion>()
-                .HasOne(i => i.Solicitud)
-                .WithMany()
-                .HasForeignKey(i => i.SolicitudId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Instalacion>()
-                .HasOne(i => i.MecanicoInstala)
-                .WithMany()
-                .HasForeignKey(i => i.MecanicoInstalaId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

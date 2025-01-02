@@ -39,12 +39,14 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile
             builder.Services.AddTransient<SolicitudPiezaViewModel>();
             builder.Services.AddTransient<EditarSolicitudViewModel>();
             builder.Services.AddTransient<SolicitudProveedorViewModel>();
+            builder.Services.AddTransient<InstalacionViewModel>();
 
             // Registrar Views
             builder.Services.AddSingleton<SolicitudesPage>();
             builder.Services.AddTransient<SolicitudPiezaPage>();
             builder.Services.AddTransient<EditarSolicitudPiezaPage>();
             builder.Services.AddTransient<SolicitudProveedorPage>();
+            builder.Services.AddTransient<InstalacionPage>();
 
             return builder.Build();
         }

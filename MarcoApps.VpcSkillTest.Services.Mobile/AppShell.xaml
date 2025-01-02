@@ -10,9 +10,15 @@
     <ShellContent
         Title="Solicitudes realizadas"
         ContentTemplate="{DataTemplate local:SolicitudesPage}"
+        Icon="solicitudes.png"
         Route="solicitudes" />
     <ShellContent
         Title="Solicitudes recibidas"
         ContentTemplate="{DataTemplate local:SolicitudProveedorPage}"
+        Icon="recibidas.png"
         Route="proveedor" />
+    <ShellContent
+        Title="Instalaciones"
+        Icon="instalacion.png"
+        ContentTemplate="{DataTemplate local:InstalacionPage}" />
 </Shell>
