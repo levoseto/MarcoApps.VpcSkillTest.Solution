@@ -5,28 +5,28 @@
     x:Class="MarcoApps.VpcSkillTest.Services.Mobile.Views.LoginPage"
     Title="LoginPage"
     Shell.NavBarIsVisible="False">
-    <StackLayout 
+    <StackLayout
         Padding="20"
         VerticalOptions="CenterAndExpand">
-        <Label 
+        <Label
             Text="Inicio de Sesión"
             FontSize="24"
             HorizontalOptions="Center" />
 
-        <Entry 
+        <Entry
             Placeholder="Correo Electrónico"
             Text="{Binding Email}" />
 
-        <Entry 
+        <Entry
             Placeholder="Contraseña"
             Text="{Binding Password}"
             IsPassword="True" />
 
-        <Button 
+        <Button
             Text="Iniciar Sesión"
             Command="{Binding LoginCommand}" />
 
-        <Label 
+        <Label
             Text="{Binding ErrorMessage}"
             TextColor="Red"
             IsVisible="{Binding ShowError}" />

@@ -6,26 +6,31 @@
     Title="SolicitudPiezaPage">
 
     <StackLayout Padding="20">
-        <Label Text="Solicitar Pieza"
-               FontSize="24"
-               HorizontalOptions="Center" />
+        <Label
+            Text="Solicitar Pieza"
+            FontSize="24"
+            HorizontalOptions="Center" />
 
-        <Picker Title="Seleccione Taller"
-                ItemsSource="{Binding Talleres, Mode=TwoWay}"
-                ItemDisplayBinding="{Binding Nombre}"
-                SelectedItem="{Binding SelectedTaller}" />
+        <Picker
+            Title="Seleccione Taller"
+            ItemsSource="{Binding Talleres, Mode=TwoWay}"
+            ItemDisplayBinding="{Binding Nombre}"
+            SelectedItem="{Binding SelectedTaller}" />
 
-        <Picker Title="Seleccione Refacción"
-                ItemsSource="{Binding Refacciones, Mode=TwoWay}"
-                ItemDisplayBinding="{Binding Nombre}"
-                SelectedItem="{Binding SelectedRefaccion}" />
+        <Picker
+            Title="Seleccione Refacción"
+            ItemsSource="{Binding Refacciones, Mode=TwoWay}"
+            ItemDisplayBinding="{Binding Nombre}"
+            SelectedItem="{Binding SelectedRefaccion}" />
 
-        <Picker Title="Seleccione un VIN"
-            ItemsSource="{Binding Vehiculos}"
+        <Picker
+            Title="Seleccione un VIN"
+            ItemsSource="{Binding Vehiculos, Mode=TwoWay}"
             ItemDisplayBinding="{Binding VIN}"
             SelectedItem="{Binding SelectedVehiculo}" />
 
-        <Button Text="Solicitar Pieza"
-                Command="{Binding SolicitarPiezaCommand}" />
+        <Button
+            Text="Solicitar Pieza"
+            Command="{Binding SolicitarPiezaCommand}" />
     </StackLayout>
 </ContentPage>

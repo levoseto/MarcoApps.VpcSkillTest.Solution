@@ -5,27 +5,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MarcoApps.VpcSkillTest.Services.Mobile.Views"
     Shell.FlyoutBehavior="Flyout"
+    Shell.TabBarIsVisible="False"
     Title="Solicitudes">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="main" />
-    <ShellContent
-        Title="Solicitudes realizadas"
-        ContentTemplate="{DataTemplate local:SolicitudesPage}"
-        Icon="solicitudes.png"
-        Route="solicitudes" />
-    <ShellContent
-        Title="Solicitudes recibidas"
-        ContentTemplate="{DataTemplate local:SolicitudProveedorPage}"
-        Icon="recibidas.png"
-        Route="proveedor" />
-    <ShellContent
-        Title="Instalaciones"
-        Icon="instalacion.png"
-        ContentTemplate="{DataTemplate local:InstalacionPage}" />
-    <ShellContent
-        Route="login"
-        ContentTemplate="{DataTemplate local:LoginPage}" />
+    <!-- Flyout con las páginas principales -->
+    <FlyoutItem Title="Solicitudes Realizadas" FlyoutDisplayOptions="AsMultipleItems">
+        <Tab Title="Inicio" Icon="home.png">
+            <ShellContent
+                ContentTemplate="{DataTemplate local:MainPage}"
+                Route="main" />
+        </Tab>
+        <Tab Title="Solicitudes Realizadas" Icon="solicitudes.png">
+            <ShellContent ContentTemplate="{DataTemplate local:SolicitudesPage}" Route="solicitudes" />
+        </Tab>
+        <Tab Icon="recibidas.png" Title="Solicitudes Recibidas">
+            <ShellContent ContentTemplate="{DataTemplate local:SolicitudProveedorPage}" Route="recibidas" />
+        </Tab>
+        <Tab Icon="instalacion.png" Title="Instalación">
+            <ShellContent ContentTemplate="{DataTemplate local:InstalacionPage}" Route="instalacion" />
+        </Tab>
+    </FlyoutItem>
+    <MenuItem
+        IconImageSource="logout.png"
+        Text="Cerrar Sesión"
+        Command="{Binding LogoutCommand}" />
 </Shell>

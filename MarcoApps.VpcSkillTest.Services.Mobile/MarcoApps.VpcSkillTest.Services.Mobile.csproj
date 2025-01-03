@@ -94,6 +94,15 @@
 	  <None Update="Views\EditarSolicitudPiezaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </None>
+	  <None Update="Views\InstalacionPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </None>
+	  <None Update="Views\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </None>
+	  <None Update="Views\MainPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </None>
 	  <None Update="Views\SolicitudesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </None>

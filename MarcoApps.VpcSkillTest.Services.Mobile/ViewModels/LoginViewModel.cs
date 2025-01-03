@@ -54,7 +54,7 @@
                     TallerNombre = response.TallerNombre
                 };
 
-                _authService.SetUser(user);
+                await _authService.SaveUserAsync(user);
 
                 // Redirigir a la pantalla principal
                 await Shell.Current.GoToAsync("//main");

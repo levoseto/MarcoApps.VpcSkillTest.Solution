@@ -10,16 +10,15 @@ public partial class SolicitudPiezaPage : ContentPage
     {
         InitializeComponent();
         this.viewModel = viewModel;
+        BindingContext = this.viewModel;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        if (BindingContext is null)
+        if (BindingContext is SolicitudPiezaViewModel)
         {
-            BindingContext = viewModel;
+            await viewModel.LoadDataAsync();
         }
-
-        await viewModel.LoadDataAsync();
     }
 }

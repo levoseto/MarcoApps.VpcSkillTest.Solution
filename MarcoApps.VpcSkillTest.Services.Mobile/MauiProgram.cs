@@ -38,6 +38,7 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile
             });
 
             // Registrar ViewModels
+            builder.Services.AddSingleton<MainViewModel>();
             builder.Services.AddSingleton<LoginViewModel>();
             builder.Services.AddSingleton<SolicitudesViewModel>();
             builder.Services.AddTransient<SolicitudPiezaViewModel>();
@@ -46,6 +47,7 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile
             builder.Services.AddTransient<InstalacionViewModel>();
 
             // Registrar Views
+            builder.Services.AddSingleton<AppShell>();
             builder.Services.AddSingleton<LoginPage>();
             builder.Services.AddSingleton<SolicitudesPage>();
             builder.Services.AddTransient<SolicitudPiezaPage>();
