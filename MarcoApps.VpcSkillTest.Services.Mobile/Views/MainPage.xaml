@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="MarcoApps.VpcSkillTest.Services.Mobile.Views.MainPage"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
     Title="MainPage">
     <ScrollView>
         <StackLayout Padding="20" Spacing="15">
@@ -75,15 +76,14 @@
             </Grid>
 
             <!-- Notificaciones -->
-            <Frame
-                CornerRadius="10"
+            <Border
                 Padding="15"
                 BackgroundColor="{DynamicResource FrameBackgroundColor}">
                 <Label
                     Text="¡Recuerda! Revisa las solicitudes pendientes antes del cierre del día."
                     FontSize="16"
                     TextColor="{DynamicResource PrimaryTextColor}" />
-            </Frame>
+            </Border>
 
             <!-- Accesos Directos -->
             <Label
