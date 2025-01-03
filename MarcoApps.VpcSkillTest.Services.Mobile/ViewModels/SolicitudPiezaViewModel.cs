@@ -122,7 +122,13 @@
                 if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
                 {
                     var talleresApi = await _httpService.GetAsync<List<Taller>>("taller");
-                    SetCollection(ref _talleres, talleresApi); // Usa SetCollection aquí
+                    // Quitar el taller que es nuestro
+                    var tallerActual = talleresApi.Find(t => t.TallerId == App._authService.CurrentUser.TallerId);
+                    if (tallerActual is not null)
+                    {
+                        talleresApi.Remove(tallerActual);
+                    }
+                    SetCollection(ref _talleres, talleresApi);
                     await App.Database.GetConnection().DeleteAllAsync<Taller>();
                     await App.Database.GetConnection().InsertAllAsync(talleresApi);
                 }
@@ -166,6 +172,8 @@
 
         private async Task SolicitarPiezaAsync()
         {
+            IsBusy = false;
+
             if (SelectedTaller == null || SelectedRefaccion == null || SelectedVehiculo == null)
             {
                 await Application.Current.MainPage.DisplayAlert("Advertencia", "Seleccione un taller y una refacción para asignar a un vehículo.", "OK");
@@ -204,6 +212,10 @@
             catch (Exception ex)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", $"Error al procesar solicitud: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
     }

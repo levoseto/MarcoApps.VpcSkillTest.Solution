@@ -10,7 +10,21 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
     {
         private readonly HttpService _httpService;
 
+        #region Attributes
+
         private ObservableCollection<Vehiculo> _Vehiculos;
+        private ObservableCollection<Refaccion> _Refacciones;
+
+        private Vehiculo _selectedVehiculo;
+        private Refaccion _selectedRefaccion;
+
+        private string _estadoMensaje;
+        private bool _mostrarEstado;
+        private bool _canRegistrar;
+
+        #endregion Attributes
+
+        #region Properties
 
         public ObservableCollection<Vehiculo> Vehiculos
         {
@@ -18,15 +32,11 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
             set => SetProperty(ref _Vehiculos, value);
         }
 
-        private ObservableCollection<Refaccion> _Refacciones;
-
         public ObservableCollection<Refaccion> Refacciones
         {
             get => _Refacciones;
             set => SetProperty(ref _Refacciones, value);
         }
-
-        private Vehiculo _selectedVehiculo;
 
         public Vehiculo SelectedVehiculo
         {
@@ -38,8 +48,6 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
             }
         }
 
-        private Refaccion _selectedRefaccion;
-
         public Refaccion SelectedRefaccion
         {
             get => _selectedRefaccion;
@@ -50,15 +58,11 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
             }
         }
 
-        private string _estadoMensaje;
-
         public string EstadoMensaje
         {
             get => _estadoMensaje;
             set => SetProperty(ref _estadoMensaje, value);
         }
-
-        private bool _mostrarEstado;
 
         public bool MostrarEstado
         {
@@ -66,13 +70,13 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
             set => SetProperty(ref _mostrarEstado, value);
         }
 
-        private bool _canRegistrar;
-
         public bool CanRegistrar
         {
             get => _canRegistrar;
             set => SetProperty(ref _canRegistrar, value);
         }
+
+        #endregion Properties
 
         public ICommand RegistrarInstalacionCommand { get; }
 

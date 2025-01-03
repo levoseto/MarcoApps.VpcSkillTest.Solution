@@ -221,6 +221,14 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
 
         private async Task GuardarCambiosAsync()
         {
+            IsBusy = false;
+
+            if (SelectedTaller == null || SelectedRefaccion == null || SelectedVehiculo == null)
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Seleccione un taller y una refacción para asignar a un vehículo.", "OK");
+                return;
+            }
+
             var solicitudDto = new Solicitud
             {
                 SolicitudId = SolicitudId, // ID de ejemplo
@@ -250,6 +258,10 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
             catch (Exception ex)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", $"Error: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
     }

@@ -1,34 +1,55 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage 
+<ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="MarcoApps.VpcSkillTest.Services.Mobile.Views.EditarSolicitudPiezaPage"
     Title="EditarSolicitudPiezaPage">
-    <VerticalStackLayout Padding="20">
-        <Label Text="Editar Solicitud"
-               FontSize="24"
-               HorizontalOptions="Center" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <VerticalStackLayout Grid.Row="0" Padding="20">
+            <Label
+                Text="Editar Solicitud"
+                FontSize="24"
+                HorizontalOptions="Center" />
 
-        <!-- Picker para Taller -->
-        <Picker Title="Seleccione un Taller"
+            <!-- Picker para Taller -->
+            <Picker
+                Title="Seleccione un Taller"
                 ItemsSource="{Binding Talleres}"
                 ItemDisplayBinding="{Binding Nombre}"
                 SelectedItem="{Binding SelectedTaller}" />
 
-        <!-- Picker para Refacción -->
-        <Picker Title="Seleccione una Refacción"
+            <!-- Picker para Refacción -->
+            <Picker
+                Title="Seleccione una Refacción"
                 ItemsSource="{Binding Refacciones}"
                 ItemDisplayBinding="{Binding Nombre}"
                 SelectedItem="{Binding SelectedRefaccion}" />
 
-        <!-- Picker para Vehículo -->
-        <Picker Title="Seleccione un VIN"
+            <!-- Picker para Vehículo -->
+            <Picker
+                Title="Seleccione un VIN"
                 ItemsSource="{Binding Vehiculos}"
                 ItemDisplayBinding="{Binding VIN}"
                 SelectedItem="{Binding SelectedVehiculo}" />
 
-        <!-- Botón para Guardar -->
-        <Button Text="Guardar Cambios"
+            <!-- Botón para Guardar -->
+            <Button
+                Text="Guardar Cambios"
                 Command="{Binding GuardarCambiosCommand}" />
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+        <Grid
+            BackgroundColor="#80000000"
+            IsVisible="{Binding IsBusy}"
+            Grid.RowSpan="2">
+            <ActivityIndicator
+                Color="{DynamicResource EntryTextColor}"
+                IsRunning="{Binding IsBusy}"
+                HorizontalOptions="Center"
+                VerticalOptions="Center" />
+        </Grid>
+    </Grid>
 </ContentPage>
