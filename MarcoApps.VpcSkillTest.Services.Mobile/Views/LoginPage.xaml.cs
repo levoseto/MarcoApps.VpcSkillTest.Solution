@@ -16,6 +16,14 @@ public partial class LoginPage : ContentPage
         };
     }
 
+    protected override void OnAppearing()
+    {
+        if (BindingContext is LoginViewModel loginViewModel)
+        {
+            loginViewModel.Initialize();
+        }
+    }
+
     private void UpdateImage()
     {
         var currentTheme = Application.Current.RequestedTheme;

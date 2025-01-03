@@ -10,8 +10,20 @@
         private readonly HttpService _httpService;
         private readonly AuthService _authService;
 
-        public string Email { get; set; }
-        public string Password { get; set; }
+        private string _email;
+        private string _password;
+
+        public string Email
+        {
+            get => _email;
+            set => SetProperty(ref _email, value);
+        }
+
+        public string Password
+        {
+            get => _password;
+            set => SetProperty(ref _password, value);
+        }
 
         private string _errorMessage;
 
@@ -36,6 +48,14 @@
             _httpService = httpService;
             _authService = authService;
             LoginCommand = new Command(async () => await LoginAsync());
+        }
+
+        public void Initialize()
+        {
+            Email = string.Empty;
+            Password = string.Empty;
+            ErrorMessage = string.Empty;
+            ShowError = false;
         }
 
         private async Task LoginAsync()

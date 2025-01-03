@@ -94,6 +94,10 @@ namespace MarcoApps.VpcSkillTest.Services.Mobile.ViewModels
 
             try
             {
+                SelectedVehiculo = null;
+                SelectedRefaccion = null;
+                MostrarEstado = false;
+                EstadoMensaje = string.Empty;
                 await CargarVehiculosAsync();
                 await CargarCatalogoRefaccionesAsync();
             }

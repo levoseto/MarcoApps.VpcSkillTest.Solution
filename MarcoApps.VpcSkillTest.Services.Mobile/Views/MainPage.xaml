@@ -1,12 +1,124 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MarcoApps.VpcSkillTest.Services.Mobile.Views.MainPage"
-             Title="MainPage">
-    <VerticalStackLayout>
-        <Label
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center"
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MarcoApps.VpcSkillTest.Services.Mobile.Views.MainPage"
+    Title="MainPage">
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="15">
+            <!-- Encabezado -->
+            <Label
+                Text="{Binding MecanicoNombre, StringFormat='¡Bienvenido, {0}!'}"
+                FontSize="24"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                TextColor="{DynamicResource PrimaryTextColor}" />
+
+            <Label
+                Text="{Binding TallerNombre, StringFormat='Taller: {0}'}"
+                FontSize="18"
+                HorizontalOptions="Center"
+                TextColor="{DynamicResource SecondaryTextColor}" />
+
+            <!-- Indicadores Rápidos -->
+            <Grid
+                ColumnDefinitions="*,*,*"
+                RowDefinitions="Auto"
+                Margin="0,20,0,10">
+                <!-- Solicitudes Realizadas -->
+                <StackLayout HorizontalOptions="Center">
+                    <Label
+                        Text="Realizadas"
+                        FontSize="14"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        TextColor="{DynamicResource PrimaryTextColor}" />
+                    <Label
+                        Text="{Binding TotalSolicitudesRealizadas}"
+                        FontSize="22"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        TextColor="{DynamicResource HighlightTextColor}" />
+                </StackLayout>
+
+                <!-- Solicitudes Recibidas -->
+                <StackLayout HorizontalOptions="Center" Grid.Column="1">
+                    <Label
+                        Text="Recibidas"
+                        FontSize="14"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        TextColor="{DynamicResource PrimaryTextColor}" />
+                    <Label
+                        Text="{Binding TotalSolicitudesRecibidas}"
+                        FontSize="22"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        TextColor="{DynamicResource HighlightTextColor}" />
+                </StackLayout>
+
+                <!-- Instalaciones -->
+                <StackLayout HorizontalOptions="Center" Grid.Column="2">
+                    <Label
+                        Text="Instalaciones"
+                        FontSize="14"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        TextColor="{DynamicResource PrimaryTextColor}" />
+                    <Label
+                        Text="{Binding TotalInstalaciones}"
+                        FontSize="22"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        TextColor="{DynamicResource HighlightTextColor}" />
+                </StackLayout>
+            </Grid>
+
+            <!-- Notificaciones -->
+            <Frame
+                CornerRadius="10"
+                Padding="15"
+                BackgroundColor="{DynamicResource FrameBackgroundColor}">
+                <Label
+                    Text="¡Recuerda! Revisa las solicitudes pendientes antes del cierre del día."
+                    FontSize="16"
+                    TextColor="{DynamicResource PrimaryTextColor}" />
+            </Frame>
+
+            <!-- Accesos Directos -->
+            <Label
+                Text="Accesos Directos"
+                FontSize="18"
+                FontAttributes="Bold"
+                TextColor="{DynamicResource PrimaryTextColor}"
+                Margin="0,10,0,5" />
+
+            <Grid
+                ColumnDefinitions="*,*"
+                RowDefinitions="Auto,Auto"
+                ColumnSpacing="15"
+                RowSpacing="10">
+                <Button
+                    Text="Solicitudes Realizadas"
+                    Command="{Binding NavigateToSolicitudesRealizadasCommand}"
+                    BackgroundColor="{DynamicResource ButtonBackgroundColor}"
+                    TextColor="{DynamicResource ButtonTextColor}"
+                    CornerRadius="20" />
+                <Button
+                    Text="Solicitudes Recibidas"
+                    Command="{Binding NavigateToSolicitudesRecibidasCommand}"
+                    BackgroundColor="{DynamicResource ButtonBackgroundColor}"
+                    TextColor="{DynamicResource ButtonTextColor}"
+                    CornerRadius="20"
+                    Grid.Column="1" />
+                <Button
+                    Text="Registrar Instalación"
+                    Command="{Binding NavigateToInstalacionCommand}"
+                    BackgroundColor="{DynamicResource ButtonBackgroundColor}"
+                    TextColor="{DynamicResource ButtonTextColor}"
+                    CornerRadius="20"
+                    Grid.Row="1" />
+            </Grid>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>
