@@ -5,30 +5,66 @@
     x:Class="MarcoApps.VpcSkillTest.Services.Mobile.Views.LoginPage"
     Title="LoginPage"
     Shell.NavBarIsVisible="False">
-    <StackLayout
-        Padding="20"
-        VerticalOptions="CenterAndExpand">
+    <ContentPage.Resources>
+        <!-- Estilo para las entradas -->
+        <Style TargetType="Entry">
+            <Setter Property="TextColor" Value="{DynamicResource EntryTextColor}" />
+            <Setter Property="PlaceholderColor" Value="{DynamicResource EntryPlaceholderColor}" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid
+        RowDefinitions="2*, *, Auto, Auto, Auto">
+        <!-- Imagen de fondo -->
+        <Image
+            x:Name="LoginImage"
+            Aspect="AspectFill"
+            Grid.RowSpan="2" />
+
+        <!-- Encabezado -->
         <Label
-            Text="Inicio de Sesión"
             FontSize="24"
-            HorizontalOptions="Center" />
+            FontAttributes="Bold"
+            Grid.Row="2"
+            HorizontalOptions="Center"
+            Margin="0,10,0,20"
+            Text="Bienvenido al Taller"
+            TextColor="{DynamicResource EntryTextColor}"
+            VerticalOptions="End" />
 
-        <Entry
-            Placeholder="Correo Electrónico"
-            Text="{Binding Email}" />
+        <!-- Formulario de Login -->
+        <StackLayout
+            Grid.Row="3"
+            Padding="20"
+            Spacing="10">
+            <Entry
+                Placeholder="Correo Electrónico"
+                Text="{Binding Email}" />
+            <Entry
+                IsPassword="True"
+                Placeholder="Contraseña"
+                Text="{Binding Password}" />
 
-        <Entry
-            Placeholder="Contraseña"
-            Text="{Binding Password}"
-            IsPassword="True" />
+            <Button
+                Command="{Binding LoginCommand}"
+                Text="Iniciar Sesión" />
 
-        <Button
-            Text="Iniciar Sesión"
-            Command="{Binding LoginCommand}" />
-
-        <Label
-            Text="{Binding ErrorMessage}"
-            TextColor="Red"
-            IsVisible="{Binding ShowError}" />
-    </StackLayout>
+            <Label
+                IsVisible="{Binding ShowError}"
+                Style="{StaticResource ErrorLabelStyle}"
+                Text="{Binding ErrorMessage}" />
+        </StackLayout>
+        <!-- Superposición para el ActivityIndicator -->
+        <Grid
+            BackgroundColor="#80000000"
+            IsVisible="{Binding IsBusy}"
+            Grid.RowSpan="5">
+            <ActivityIndicator
+                Color="{DynamicResource EntryTextColor}"
+                IsRunning="{Binding IsBusy}"
+                HorizontalOptions="Center"
+                VerticalOptions="Center" />
+        </Grid>
+    </Grid>
 </ContentPage>

@@ -12,8 +12,22 @@
 
         public string Email { get; set; }
         public string Password { get; set; }
-        public string ErrorMessage { get; set; }
-        public bool ShowError { get; set; }
+
+        private string _errorMessage;
+
+        public string ErrorMessage
+        {
+            get => _errorMessage;
+            set => SetProperty(ref _errorMessage, value);
+        }
+
+        private bool _showError;
+
+        public bool ShowError
+        {
+            get => _showError;
+            set => SetProperty(ref _showError, value);
+        }
 
         public ICommand LoginCommand { get; }
 

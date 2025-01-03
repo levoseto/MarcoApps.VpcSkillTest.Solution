@@ -8,5 +8,21 @@ public partial class LoginPage : ContentPage
     {
         InitializeComponent();
         BindingContext = loginViewModel;
+        UpdateImage(); // Configura la imagen inicial basada en el tema actual
+
+        Application.Current.RequestedThemeChanged += (s, e) =>
+        {
+            UpdateImage(); // Actualiza la imagen cuando cambia el tema
+        };
+    }
+
+    private void UpdateImage()
+    {
+        var currentTheme = Application.Current.RequestedTheme;
+
+        // Cambia la imagen según el tema
+        LoginImage.Source = currentTheme == AppTheme.Dark
+            ? "main_dark.jpg"
+            : "main_light.jpg";
     }
 }
